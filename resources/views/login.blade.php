@@ -15,13 +15,9 @@
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="username" type="text" class="form-control @error('email') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="email" autofocus>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                               
                             </div>
                         </div>
 
@@ -65,6 +61,11 @@
                             </div>
                         </div>
                     </form>
+                    <div class="mt-4 text-center">
+                        <a class="text-blue-500 hover:text-blue-700 text-sm font-medium" href="{{ route('register') }}">
+                            Don't have an account? Register here
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,9 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\RegisterController;
+use App\Models\Groupe;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,3 +25,27 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', [RegisterController::class, 'create'])->name('register');
+Route::post('/register', [RegisterController::class, 'store']);
+
+
+Route::resource('fonctions', FonctionController::class)->middleware('auth');
+
+Route::resource('groupes', GroupeController::class)->middleware('auth');
+Route::resource('points', PointController::class)->middleware('auth');
+Route::resource('primes', PrimeController::class)->middleware('auth');
+Route::resource('employees', EmployeeController::class);
+
+
+Route::get('/fonctions-by-groupe', [EmployeeController::class, 'getFonctionsByGroupe'])->name('fonctions-by-groupe');
+Route::get('/primes-by-groupe', [EmployeeController::class, 'getPrimesByGroupe'])->name('primes-by-groupe');
+
+Route::get('/dashboard', function () {
+    // You would typically fetch these counts from your database
+    return view('dashboard', [
+        'employeeCount' =>  5,//\App\Models\Employee::count(),
+        'positionCount' => 48,//\App\Models\Position::count(),
+        'bonusCount' => 20,//\App\Models\Bonus::count(),
+        'salaryCount' => 30,//\App\Models\Salary::count(),
+    ]);
+})->middleware(['auth'])->name('dashboard');
