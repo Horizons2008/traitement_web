@@ -5,35 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Prime extends Model
+class PrimeConfiguration extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'abrv',
-        'groupe_id',
+        'prime_id',
         'min_cat',
-        'max_cat'
+        'max_cat',
+        'valeur'
     ];
-    
-    public function groupe()
+
+    public function prime()
     {
-        return $this->belongsTo(Groupe::class);
+        return $this->belongsTo(Prime::class);
     }
-    public function configurations()
-{
-    return $this->hasMany(PrimeConfiguration::class);
-}
-    public function employees()
-    {
-        return $this->belongsToMany(Employee::class)
-                    ->using(EmployeePrime::class)
-                    ->withPivot('type', 'valeur');
-    }
-    
-    
-    // Accessor for category range display
+
     public function getCategoryRangeAttribute()
     {
         if ($this->min_cat && $this->max_cat) {

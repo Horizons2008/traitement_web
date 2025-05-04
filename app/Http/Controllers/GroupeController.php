@@ -61,7 +61,7 @@ class GroupeController extends Controller
     }
 
     public function destroy(Groupe $position)
-    {
+    {dd($position);
         $position->delete();
 
         return redirect()->route('groupes.index')

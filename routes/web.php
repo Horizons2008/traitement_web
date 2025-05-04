@@ -35,8 +35,19 @@ Route::resource('groupes', GroupeController::class)->middleware('auth');
 Route::resource('points', PointController::class)->middleware('auth');
 Route::resource('primes', PrimeController::class)->middleware('auth');
 Route::resource('employees', EmployeeController::class);
+Route::resource('configurations', PrimeConfigurationController::class)
+    ->shallow()
+    ->except(['show']);
+
+    Route::get('employees/{employee}/calculate-salary', [SalaryController::class, 'calculate'])
+    ->name('employees.calculate-salary');
+    Route::post('calculate-all', [SalaryController::class, 'calculateAll'])
+        ->name('calculate-all');
+
+        
 
 
+      
 Route::get('/fonctions-by-groupe', [EmployeeController::class, 'getFonctionsByGroupe'])->name('fonctions-by-groupe');
 Route::get('/primes-by-groupe', [EmployeeController::class, 'getPrimesByGroupe'])->name('primes-by-groupe');
 

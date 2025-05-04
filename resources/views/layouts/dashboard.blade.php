@@ -63,8 +63,19 @@
                 </a>
             </a>
             <a href="{{ route('employees.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
-                <i class="fas fa-briefcase mr-2"></i> Employee
+                <i class="fas fa-briefcase mr-2"></i> Employee12
             </a>
+           
+            <a href="{{ route('calculate-all') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-calculator"></i> Calculate All Salaries
+            </a>
+
+            <form action="{{ route('calculate-all') }}" method="POST" class="mt-4">
+                @csrf
+                <button type="submit" class="btn btn-lg btn-success w-100">
+                    <i class="fas fa-calculator"></i> Calculate All Salaries
+                </button>
+            </form>
             </nav>
         </div>
 
@@ -97,6 +108,12 @@
                 link.classList.add('active');
             }
         });
+
+        document.querySelector('#calculate-all-btn').addEventListener('click', function(e) {
+    if (!confirm('Are you sure you want to calculate salaries for all employees?')) {
+        e.preventDefault();
+    }
+});
     </script>
 </body>
 </html>
