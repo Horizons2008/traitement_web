@@ -14,7 +14,9 @@ class Prime extends Model
         'abrv',
         'groupe_id',
         'min_cat',
-        'max_cat'
+        'max_cat',
+        'mode',
+        
     ];
     
     public function groupe()

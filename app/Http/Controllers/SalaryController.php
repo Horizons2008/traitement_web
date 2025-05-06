@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Groupe;
+use App\Models\Prime;
 use App\Models\Salary;
 use Illuminate\Http\Request;
 
@@ -29,34 +31,40 @@ class SalaryController extends Controller
     }
     // app/Http/Controllers/SalaryController.php
 
-    public function calculateAll()
-    {
-        $employees = Employee::with(['primes.configurations'])->get();
-        $results = [];
+    public function calculateAll(Request $request)
+{
+   
+    
+    // Get all primes first to maintain consistent order
+    $allPrimes = Prime::with('configurations')->get();
+    
+    $employees = Employee::with(['primes.configurations'])->where('groupe_id', $request->groupe_id)->get();
+    $results = [];
+    
+    foreach ($employees as $employee) {
+        $salaryData = Salary::calculateForEmployee($employee, $request->groupe_id);
         
-        foreach ($employees as $employee) {
-            $salaryData = Salary::calculateForEmployee($employee);
-            
-            $salary = Salary::updateOrCreate(
-                [
-                    'employee_id' => $employee->id,
-                    'created_at' => now()->startOfMonth()
-                ],
-                $salaryData
-            );
-            
-            $results[] = [
-                'employee' => $employee,
-                'salary' => $salaryData,
-                'prime_details' => $salaryData->prime_details
-            ];
-        }
+        Salary::updateOrCreate(
+            ['employee_id' => $employee->id, 'created_at' => now()->startOfMonth()],
+            $salaryData
+        );
         
-        return view('salaries.bulk-results', [
-            'results' => $results,
-            'month' => now()->format('F Y')
-        ]);
+        $results[] = [
+            'employee' => $employee,
+            'salary' => $salaryData
+        ];
     }
+    $groupes = Groupe::all();
+       // return view('primes.create', compact('groupes'));
+    
+    return view('salaries.index', [
+        'results' => $results,
+        'month' => now()->format('F Y'),
+        'allPrimes' => $allPrimes ,'groupes' => Groupe::all(),
+        'groupe_id' => $request->groupe_id
+        // Pass all primes to view
+    ]);
+}
 
     public function show(Salary $salary)
     {

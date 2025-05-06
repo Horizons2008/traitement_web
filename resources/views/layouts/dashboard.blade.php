@@ -72,6 +72,7 @@
 
             <form action="{{ route('calculate-all') }}" method="POST" class="mt-4">
                 @csrf
+                <input type="hidden" name="groupe_id" value="1">
                 <button type="submit" class="btn btn-lg btn-success w-100">
                     <i class="fas fa-calculator"></i> Calculate All Salaries
                 </button>

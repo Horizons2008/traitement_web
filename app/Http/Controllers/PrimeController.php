@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 class PrimeController extends Controller
 {
     public function index()
-    {
-        $primes = Prime::with('groupe')->latest()->get();
-        return view('primes.index', compact('primes'));
+
+    {$grou=1;
+        $primes = Prime::with('groupe')->where('groupe_id', $grou)-> latest()->get();
+        $groupes = Groupe::all();
+        return view('primes.index', compact('primes','groupes'));
     }
 
     public function create()
@@ -28,6 +30,7 @@ class PrimeController extends Controller
             'groupe_id' => 'required|exists:groupes,id',
             'min_cat' => 'nullable|integer|min:1',
             'max_cat' => 'nullable|integer|min:1|gte:min_cat',
+            'mode' => 'integer|in:0,1,2',
         ]);
 
         Prime::create($validated);
@@ -55,6 +58,8 @@ class PrimeController extends Controller
             'groupe_id' => 'required|exists:groupes,id',
             'min_cat' => 'nullable|integer|min:1',
             'max_cat' => 'nullable|integer|min:1|gte:min_cat',
+            'mode' => 'integer|in:0,1,2',
+            
         ]);
 
         $prime->update($validated);

@@ -7,6 +7,7 @@
 
 @extends('layouts.app')
 
+
 @section('content')
 <div class="card">
     <div class="card-header">
@@ -57,6 +58,17 @@
                            value="{{ old('max_cat', $prime->max_cat ?? '') }}" min="1">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="groupe_id">Mode</label>
+                <select class="form-control" id="mode" name="mode" required>
+                    <option value="">Select Groupe</option>
+                    <option value=0>pourcentage</option>
+                <option value=1>point</option>
+                <option value=2>valeur</option>
+                   
+                </select>
+            </div>
+           
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('primes.index') }}" class="btn btn-secondary">Cancel</a>

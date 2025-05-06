@@ -32,20 +32,21 @@ class Salary extends Model
         return $this->belongsTo(Employee::class);
     }
 
-    public static function calculateForEmployee(Employee $employee)
+    public static function calculateForEmployee(Employee $employee,$groupeId)
     {
         // Get all primes from the system
-        $allPrimes = Prime::with('configurations')->get();
+        $allPrimes = Prime::with('configurations')->where('groupe_id', $groupeId)->get();
         
         // Existing base salary calculation
         $pointCat = Point::where('cat', $employee->cat)
                        ->where('echelon', 0)
                        ->value('valeur') ?? 0;
         $montCat = $pointCat * 45;
+        $groupeId==1? $pointEchelon=20 : $pointEchelon=10;
         
-        $pointEchelon = Point::where('cat', $employee->cat)
+       /* $pointEchelon = Point::where('cat', $employee->cat)
                            ->where('echelon', $employee->echelon)
-                           ->value('valeur') ?? 0;
+                           ->value('valeur') ?? 0;*/
         $montEchelon = $pointEchelon * 45;
         
         $salBase = $montCat + $montEchelon;
@@ -71,6 +72,7 @@ class Salary extends Model
             $applied = false;
     
             if ($configuration) {
+                $prime->mode== 0 ?  $montPrime = $configuration->valeur * 0.01 * $salBase : ($configuration->mode == 1 ?  $montPrime = $configuration->valeur *45 :  $montPrime = $configuration->valeur );
                 $montPrime = $configuration->valeur * 0.01 * $salBase;
                 $calculation = "{$configuration->valeur}% of " . number_format($salBase, 2);
                 $totalPrimes += $montPrime;
