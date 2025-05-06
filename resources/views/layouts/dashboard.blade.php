@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payroll Management System</title>
-   
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .sidebar {
@@ -27,7 +27,7 @@
                 <i class="fas fa-money-bill-wave fa-2x"></i>
                 <span class="text-2xl font-extrabold">PayrollMS</span>
             </div>
-            
+
             <nav>
                 <a href="" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
                     <i class="fas fa-users mr-2"></i> Employés
@@ -41,7 +41,7 @@
                 <a href="" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
                     <i class="fas fa-money-check-alt mr-2"></i> Salaires122
                 </a>
-                
+
                 <form method="POST" action="{{ route('logout') }}" class="mt-10">
                     @csrf
                     <button type="submit" class="w-full text-left block py-2.5 px-4 rounded transition duration-200 hover:bg-red-600 hover:text-white">
@@ -49,8 +49,10 @@
                     </button>
                 </form>
 
-                <a href="{{ route('fonctions.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
-                    <i class="fas fa-briefcase mr-2"></i> Fonctions9999
+                <a href="{{ route('fonctions.index',['groupe_id' => 1]) }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+                    <i class="fas fa-briefcase mr-2"></i> Fonctions
+
+
                 </a>
                 <a href="{{ route('groupes.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
                     <i class="fas fa-briefcase mr-2"></i> Groupe
@@ -65,7 +67,7 @@
             <a href="{{ route('employees.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
                 <i class="fas fa-briefcase mr-2"></i> Employee12
             </a>
-           
+
             <a href="{{ route('calculate-all') }}" class="btn btn-primary mb-3">
                 <i class="fas fa-calculator"></i> Calculate All Salaries
             </a>
@@ -101,7 +103,7 @@
             </main>
         </div>
     </div>
-    
+
     <script>
         // Highlight active menu item
         document.querySelectorAll('nav a').forEach(link => {

@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-       
+
             Schema::create('fonctions', function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
                 $table->string('abrv');
                 $table->integer('cat');
                 $table->timestamps();
-                $table->unsignedBigInteger('groupe_id')->unique()->nullable();
+                $table->unsignedBigInteger('groupe_id')->nullable();
         $table->foreign('groupe_id')->references('id')->on('groupes')->onDelete('set null');
             });
-       
+
     }
 
     /**

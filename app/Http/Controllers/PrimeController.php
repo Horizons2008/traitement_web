@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class PrimeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 
-    {$grou=1;
+    {$grou=$request->groupe_id;
         $primes = Prime::with('groupe')->where('groupe_id', $grou)-> latest()->get();
         $groupes = Groupe::all();
         return view('primes.index', compact('primes','groupes'));
@@ -59,7 +59,7 @@ class PrimeController extends Controller
             'min_cat' => 'nullable|integer|min:1',
             'max_cat' => 'nullable|integer|min:1|gte:min_cat',
             'mode' => 'integer|in:0,1,2',
-            
+
         ]);
 
         $prime->update($validated);
