@@ -60,7 +60,7 @@
                 <a href="{{ route('points.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
                     <i class="fas fa-briefcase mr-2"></i> Points Indicieles
                 </a>
-                <a href="{{ route('primes.index') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+                <a href="{{ route('primes.index',['groupe_id' => 1]) }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
                     <i class="fas fa-briefcase mr-2"></i> Primes
                 </a>
             </a>

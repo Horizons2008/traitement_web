@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Primes List</h1>
 
-    <form action="{{ route('calculate-all') }}" method="POST" class="mt-4">
+    <form action="{{ route('primes.index') }}" method="GET" class="mt-4">
         @csrf
        
 <div class="col-md-6">
@@ -11,7 +11,7 @@
         <select class="form-select" id="groupe_id" name="groupe_id" required>
             <option value="">-- Select Groupe --</option>
             @foreach($groupes as $groupe)
-                <option value="{{ $groupe->id }}" >
+                <option value="{{ $groupe->id }}"  {{ request('groupe_id') == $groupe->id ? 'selected' : '' }}>
                    
                    
                     {{ $groupe->title }}
@@ -72,6 +72,7 @@
     </table>
 </div>
 @endsection
+
 
 
 

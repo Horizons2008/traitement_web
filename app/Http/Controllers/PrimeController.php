@@ -10,10 +10,11 @@ class PrimeController extends Controller
 {
     public function index(Request $request)
 
-    {$grou=$request->groupe_id;
-        $primes = Prime::with('groupe')->where('groupe_id', $grou)-> latest()->get();
+    {$groupe_id=$request->groupe_id;
+       // dd($request->all());
+        $primes = Prime::with('groupe')->where('groupe_id', $groupe_id )-> latest()->get();
         $groupes = Groupe::all();
-        return view('primes.index', compact('primes','groupes'));
+        return view('primes.index', compact('primes','groupes','groupe_id'));
     }
 
     public function create()
