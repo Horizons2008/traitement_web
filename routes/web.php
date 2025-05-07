@@ -37,7 +37,13 @@ Route::resource('primes', PrimeController::class)->middleware('auth');
 Route::resource('employees', EmployeeController::class);
 Route::resource('configurations', PrimeConfigurationController::class)
     ->shallow()
-    ->except(['show']);
+    ->except(['show','edit','delete']);
+    Route::get('primes/{prime}/configurations', [PrimeConfigurationController::class, 'index'])
+    ->name('primes.configurations.index')
+    ->middleware('auth');
+    //Route::get('primes/{prime}/configurations', [PrimeConfigurationController::class, 'delete'])
+    //->name('primes.configurations.delete')
+    //->middleware('auth');
 
     Route::get('employees/{employee}/calculate-salary', [SalaryController::class, 'calculate'])
     ->name('employees.calculate-salary');

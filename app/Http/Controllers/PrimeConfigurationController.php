@@ -45,8 +45,9 @@ class PrimeConfigurationController extends Controller
         }
 
        $prime->configurations()->create($validated);
+     //  {{ route('primes.configurations.index', ['prime' => $prime->id]) }}
 
-        return redirect()->route('configurations.index', $prime->id)
+        return redirect()->route('primes.configurations.index', ['prime' => $prime->id])
             ->with('success', 'Configuration added successfully.');
     }
 

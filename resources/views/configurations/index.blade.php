@@ -25,7 +25,7 @@
                 <td>{{ $config->category_range }}</td>
                 <td>{{ $config->valeur }}</td>
                 <td>
-                    <a href="{{ route('primes.configurations.edit', [$prime->id, $config->id]) }}" 
+                    <a href="" 
                        class="btn btn-warning btn-sm">Edit</a>
                     <form action="{{ route('configurations.destroy', [$prime->id, $config->id]) }}" 
                           method="POST" style="display:inline;">

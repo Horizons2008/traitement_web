@@ -20,7 +20,7 @@
         </select>
     </div>
         <button type="submit" class="btn btn-lg btn-success w-100">
-            <i class="fas fa-calculator"></i> Calculate All Salaries
+            <i class="fas fa-calculator"></i> Filtrer
         </button>
     </form>
 
@@ -45,13 +45,13 @@
                 <td>{{ $prime->title }}</td>
                 <td>{{ $prime->abrv }}</td>
                 <td>{{ $prime->groupe->title ?? 'N/A' }}</td>
-                <td>{{ $prime->mode_name }}</td>
+                <td>{{ $prime->mode }}</td>
                 <td>
 
-<a href="{{ route('configurations.index', $prime->id) }}" 
+                    <a href="{{ route('primes.configurations.index', ['prime' => $prime->id]) }}" 
                         class="btn btn-sm btn-info">
                         {{ $prime->configurations_count }} Configs
-                     </a>
+                    </a>
 
 
                 </td>
