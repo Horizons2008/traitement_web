@@ -6,7 +6,7 @@
         <h3>Configurations for Prime: {{ $prime->title }}</h3>
        
        
-        <a href="{{ route('configurations.create', $prime->id) }}" class="btn btn-primary">
+        <a href="{{ route('configurations.create', ['prime' => $prime->id]) }}" class="btn btn-primary">
             Add New Configuration
         </a>
     </div>
@@ -27,7 +27,7 @@
                 <td>
                     <a href="" 
                        class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('configurations.destroy', [$prime->id, $config->id]) }}" 
+                    <form action="" 
                           method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')

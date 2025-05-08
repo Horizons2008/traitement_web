@@ -41,6 +41,10 @@ Route::resource('configurations', PrimeConfigurationController::class)
     Route::get('primes/{prime}/configurations', [PrimeConfigurationController::class, 'index'])
     ->name('primes.configurations.index')
     ->middleware('auth');
+    
+    
+
+
     //Route::get('primes/{prime}/configurations', [PrimeConfigurationController::class, 'delete'])
     //->name('primes.configurations.delete')
     //->middleware('auth');
