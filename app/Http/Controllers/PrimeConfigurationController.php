@@ -16,20 +16,17 @@ class PrimeConfigurationController extends Controller
 
     public function create(Prime $prime)
     {
-        
         return view('configurations.create', compact('prime'));
     }
 
     public function store(Request $request, Prime $prime)
     {
-        
         $validated = $request->validate([
             'min_cat' => 'nullable|integer',
             'max_cat' => 'nullable|integer',
             'valeur' => 'required|integer|min:0'
         ]);
-        $prime->id=1;
-
+       
         $validated['prime_id'] = $prime->id;
 
         // Check for existing configuration
@@ -38,14 +35,12 @@ class PrimeConfigurationController extends Controller
             ->where('max_cat', $validated['max_cat'])
             ->exists();
            
-
         if ($exists) {
             return back()->withInput()
                 ->withErrors(['unique' => 'A configuration with these category ranges already exists for this prime.']);
         }
 
-       $prime->configurations()->create($validated);
-     //  {{ route('primes.configurations.index', ['prime' => $prime->id]) }}
+        $prime->configurations()->create($validated);
 
         return redirect()->route('primes.configurations.index', ['prime' => $prime->id])
             ->with('success', 'Configuration added successfully.');
@@ -78,14 +73,14 @@ class PrimeConfigurationController extends Controller
 
         $configuration->update($validated);
 
-        return redirect()->route('configurations.index', $prime->id)
+        return redirect()->route('primes.configurations.index', ['prime' => $prime->id])
             ->with('success', 'Configuration updated successfully.');
     }
 
     public function destroy(Prime $prime, PrimeConfiguration $configuration)
     {
         $configuration->delete();
-        return redirect()->route('configurations.index', $prime->id)
+        return redirect()->route('primes.configurations.index', ['prime' => $prime->id])
             ->with('success', 'Configuration deleted successfully.');
     }
 }

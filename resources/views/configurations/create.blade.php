@@ -11,8 +11,8 @@
     @endif
     
     <form action="{{ isset($configuration) 
-        ? route('configurations.update', [$prime->id, $configuration->id]) 
-        : route('configurations.store', $prime->id) }}" method="POST">
+        ? route('primes.configurations.update', ['prime' => $prime->id, 'configuration' => $configuration->id]) 
+        : route('primes.configurations.store', ['prime' => $prime->id]) }}" method="POST">
         @csrf
         @if(isset($configuration))
             @method('PUT')
@@ -44,7 +44,7 @@
         <button type="submit" class="btn btn-primary">
             {{ isset($configuration) ? 'Update' : 'Create' }} Configuration
         </button>
-        <a href="{{ route('configurations.index', $prime->id) }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ route('primes.configurations.index', ['prime' => $prime->id]) }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 @endsection
