@@ -14,9 +14,9 @@ class PrimeConfigurationController extends Controller
         return view('configurations.index', compact('prime', 'configurations'));
     }
 
-    public function create(Prime $prime)
+    public function create(Prime $prime, PrimeConfiguration $configuration = null)
     {
-        return view('configurations.create', compact('prime'));
+        return view('configurations.create', compact('prime', 'configuration'));
     }
 
     public function store(Request $request, Prime $prime)
@@ -48,7 +48,7 @@ class PrimeConfigurationController extends Controller
 
     public function edit(Prime $prime, PrimeConfiguration $configuration)
     {
-        return view('configurations.edit', compact('prime', 'configuration'));
+        return $this->create($prime, $configuration);
     }
 
     public function update(Request $request, Prime $prime, PrimeConfiguration $configuration)
