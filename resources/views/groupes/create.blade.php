@@ -1,6 +1,6 @@
-@extends('layouts.dashboard')
+@extends('layouts.app')
 
-@section('title', 'Ajouter une Fonction')
+
 
 @section('content')
 <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -21,10 +21,10 @@
             
             
             <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <button type="submit" class="btn btn-primary">
                     Enregistrer
                 </button>
-                <a href="{{ route('groupes.index') }}" class="text-gray-600 hover:text-gray-800">
+                <a href="{{ route('groupes.index') }}" class="btn btn-secondary">
                     Annuler
                 </a>
             </div>

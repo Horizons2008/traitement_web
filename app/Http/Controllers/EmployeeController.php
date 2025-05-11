@@ -130,7 +130,7 @@ class EmployeeController extends Controller
 
     // Delete employee
     public function destroy(Employee $employee)
-    {
+    {dd($employee);
         try {
             // Pre-delete callback
             $this->beforeEmployeeDeleted($employee);

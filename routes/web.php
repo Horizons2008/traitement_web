@@ -70,3 +70,12 @@ Route::get('/dashboard', function () {
         'salaryCount' => 30,//\App\Models\Salary::count(),
     ]);
 })->middleware(['auth'])->name('dashboard');
+
+// Language Switch Route
+Route::get('language/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'fr'])) {
+        session()->put('locale', $locale);
+        app()->setLocale($locale);
+    }
+    return redirect()->back();
+})->name('language.switch');

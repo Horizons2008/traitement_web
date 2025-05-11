@@ -1,76 +1,137 @@
-@extends('layouts.app')
-@section('content')
-<div class="container">
-    <h1>Primes List</h1>
+@extends('layouts.dashboard')
 
-    <form action="{{ route('primes.index') }}" method="GET" class="mt-4">
-        @csrf
-       
-<div class="col-md-6">
-        <label for="groupe_id" class="form-label">Groupe *</label>
-        <select class="form-select" id="groupe_id" name="groupe_id" required>
-            <option value="">-- Select Groupe --</option>
-            @foreach($groupes as $groupe)
-                <option value="{{ $groupe->id }}"  {{ request('groupe_id') == $groupe->id ? 'selected' : '' }}>
-                   
-                   
-                    {{ $groupe->title }}
-                </option>
-            @endforeach
-        </select>
+@section('title', 'Gestion des Primes')
+
+@section('content')
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">Liste des Primes</h2>
+        <a href="{{ route('primes.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200">
+            <i class="fas fa-plus mr-2"></i>Ajouter
+        </a>
     </div>
-        <button type="submit" class="btn btn-lg btn-success w-100">
-            <i class="fas fa-calculator"></i> Filtrer
-        </button>
+
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
+
+    <!-- Search Form -->
+    <form method="GET" action="{{ route('primes.index') }}" class="mb-6">
+        <div class="flex gap-4">
+            <div class="flex-1">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher..." 
+                       class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+            </div>
+            <div class="w-64">
+                <select name="groupe_id" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                    <option value="">Tous les groupes</option>
+                    @foreach($groupes as $groupe)
+                        <option value="{{ $groupe->id }}" {{ request('groupe_id') == $groupe->id ? 'selected' : '' }}>
+                            {{ $groupe->title }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </form>
 
-    <a href="{{ route('primes.create') }}" class="btn btn-primary mb-3">Add New Prime</a>
-    
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                
-                    <th>Title</th>
-                    <th>Abbreviation</th>
-                    <th>Groupe</th>
-                    <th>Mode</th>
-                    <th>Configurations</th> <!-- New Column -->
-                    <th>Actions</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($primes as $prime)
-            <tr>
-                <td>{{ $prime->title }}</td>
-                <td>{{ $prime->abrv }}</td>
-                <td>{{ $prime->groupe->title ?? 'N/A' }}</td>
-                <td>{{ $prime->mode }}</td>
-                <td>
+    <!-- Primes Table -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Abréviation</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Groupe</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mode</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Configurations</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @forelse($primes as $prime)
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $prime->title }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $prime->abrv }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $prime->groupe->title ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        @switch($prime->mode)
+                            @case(0)
+                                Pourcentage
+                                @break
+                            @case(1)
+                                Point
+                                @break
+                            @case(2)
+                                Valeur
+                                @break
+                            @default
+                                N/A
+                        @endswitch
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <a href="{{ route('primes.configurations.index', ['prime' => $prime->id]) }}" 
+                           class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            {{ $prime->configurations_count }} Configs
+                        </a>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <a href="{{ route('primes.show', $prime->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{{ route('primes.edit', $prime->id) }}" class="text-yellow-600 hover:text-yellow-900 mr-3">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="{{ route('primes.destroy', $prime->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette prime?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Aucune prime trouvée</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-                    <a href="{{ route('primes.configurations.index', ['prime' => $prime->id]) }}" 
-                        class="btn btn-sm btn-info">
-                        {{ $prime->configurations_count }} Configs
-                    </a>
-
-
-                </td>
-                
-                <td>
-                    <a href="{{ route('employees.show', $prime->id) }}" class="btn btn-info btn-sm">View</a>
-                    <a href="{{ route('employees.edit', $prime->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('employees.destroy', $prime->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
-                    
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $primes->links() }}
+    </div>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add confirmation dialog for delete forms
+        const deleteForms = document.querySelectorAll('form[action*="destroy"]');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer cette prime?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+@endpush
 @endsection
 
 

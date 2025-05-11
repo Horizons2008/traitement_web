@@ -7,25 +7,25 @@
     <div class="p-6">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Modifier la Fonction</h2>
         
-        <form method="POST" action="{{ route('positions.update', $position->id) }}">
+        <form method="POST" action="{{ route('fonctions.update', $fonction->id) }}">
             @csrf
             @method('PUT')
             
             <div class="mb-4">
                 <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Titre</label>
-                <input type="text" name="title" id="title" value="{{ $position->title }}" required
+                <input type="text" name="title" id="title" value="{{ $fonction->title }}" required
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             
             <div class="mb-4">
                 <label for="abrv" class="block text-gray-700 text-sm font-bold mb-2">Abréviation</label>
-                <input type="text" name="abrv" id="abrv" value="{{ $position->abrv }}" required maxlength="10"
+                <input type="text" name="abrv" id="abrv" value="{{ $fonction->abrv }}" required maxlength="10"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             
             <div class="mb-4">
                 <label for="cat" class="block text-gray-700 text-sm font-bold mb-2">Catégorie</label>
-                <input type="number" name="cat" id="cat" value="{{ $position->cat }}" required
+                <input type="number" name="cat" id="cat" value="{{ $fonction->cat }}" required
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             

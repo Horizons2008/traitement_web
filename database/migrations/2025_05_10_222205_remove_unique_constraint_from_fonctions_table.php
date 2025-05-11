@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groupes', function (Blueprint $table) {
-            $table->id();
-           
-                $table->string('title');
-                
-           
-            $table->timestamps();
+        Schema::table('fonctions', function (Blueprint $table) {
+            // Drop the unique constraint if it exists
+            $table->dropUnique('fonctions_groupe_id_unique');
         });
     }
 
@@ -30,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groupes');
+        Schema::table('fonctions', function (Blueprint $table) {
+            // Add back the unique constraint if needed to rollback
+            $table->unique('groupe_id', 'fonctions_groupe_id_unique');
+        });
     }
 };

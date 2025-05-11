@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Groupe extends Model
 {
     use HasFactory;
-    protected $fillable = ['title' ];
-    public function fonction()
+    protected $fillable = ['title'];
+    
+    public function fonctions()
     {
-        return $this->hasOne(Fonction::class);
+        return $this->hasMany(Fonction::class);
     }
 }

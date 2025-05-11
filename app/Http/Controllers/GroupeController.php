@@ -42,27 +42,27 @@ class GroupeController extends Controller
         return view('groupes.show', compact('position'));
     }
 
-    public function edit(Groupe $position)
+    public function edit(Groupe $groupe)
     {
-        return view('groupes.edit', compact('position'));
+        return view('groupes.edit', compact('groupe'));
     }
 
-    public function update(Request $request, Groupe $position)
+    public function update(Request $request, Groupe $groupe)
     {
         $request->validate([
             'title' => 'required|string|max:255',
             
         ]);
 
-        $position->update($request->all());
+        $groupe->update($request->all());
 
         return redirect()->route('groupes.index')
                          ->with('success', 'Position updated successfully.');
     }
 
-    public function destroy(Groupe $position)
-    {dd($position);
-        $position->delete();
+    public function destroy(Groupe $groupe)
+    {
+        $groupe->delete();
 
         return redirect()->route('groupes.index')
                          ->with('success', 'Position deleted successfully.');
