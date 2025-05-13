@@ -130,7 +130,7 @@ class EmployeeController extends Controller
 
     // Delete employee
     public function destroy(Employee $employee)
-    {dd($employee);
+    {
         try {
             // Pre-delete callback
             $this->beforeEmployeeDeleted($employee);
@@ -240,7 +240,25 @@ class EmployeeController extends Controller
     private function syncPrimes($employee, $primes)
     {
         if (is_array($primes)) {
-            $employee->primes()->sync($primes);
+            $primeValues = [];
+            
+            // Get all primes to check their modes
+            $primesData = Prime::whereIn('id', $primes)->get();
+            
+            foreach ($primes as $primeId) {
+                $prime = $primesData->firstWhere('id', $primeId);
+                
+                if ($prime && $prime->mode === 2) {
+                    // If prime has mode 2, get its value from the request
+                    $value = request()->input("prime_values.{$primeId}");
+                    if ($value !== null) {
+                        $primeValues[$primeId] = ['valeur' => $value];
+                    }
+                }
+            }
+            
+            // Sync primes with their values
+            $employee->primes()->sync($primeValues);
         }
     }
 

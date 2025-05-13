@@ -132,10 +132,19 @@
                     <label>Primes</label>
                     <div id="primesContainer">
                         @foreach($primes as $prime)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="primes[]" id="prime{{ $prime->id }}" value="{{ $prime->id }}" 
+                            <div class="form-check prime-item">
+                                <input class="form-check-input prime-checkbox" type="checkbox" name="primes[]" id="prime{{ $prime->id }}" 
+                                    value="{{ $prime->id }}" data-mode="{{ $prime->mode }}"
                                     {{ $employee->primes->contains($prime->id) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="prime{{ $prime->id }}">{{ $prime->title }} ({{ $prime->abrv }}) - {{ $prime->category_range }}</label>
+                                @if($prime->mode === 2)
+                                    <div class="prime-value-input" id="primeValue{{ $prime->id }}" 
+                                        style="{{ $employee->primes->contains($prime->id) ? '' : 'display:none;' }} margin-left: 20px; margin-top: 5px;">
+                                        <input type="number" class="form-control" name="prime_values[{{ $prime->id }}]" 
+                                            placeholder="Enter value" 
+                                            value="{{ $employee->primes->find($prime->id)->pivot->valeur ?? '' }}">
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -182,6 +191,20 @@ $(document).ready(function() {
     $('#sit_famill').change(toggleChildrenFields);
     $('#nbrEnfant').on('input', togglePlus10);
     
+    // Handle prime checkbox changes
+    $(document).on('change', '.prime-checkbox', function() {
+        const primeId = $(this).val();
+        const primeMode = $(this).data('mode');
+        const valueInput = $(`#primeValue${primeId}`);
+        
+        if ($(this).is(':checked') && primeMode === 2) {
+            valueInput.show();
+        } else {
+            valueInput.hide();
+            valueInput.find('input').val('');
+        }
+    });
+    
     // Get fonctions when groupe changes
     $('#groupe_id').change(function() {
         const groupeId = $(this).val();
@@ -198,12 +221,23 @@ $(document).ready(function() {
                 $('#primesContainer').empty();
                 if (data.length > 0) {
                     $.each(data, function(key, prime) {
-                        $('#primesContainer').append(`
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="primes[]" id="prime${prime.id}" value="${prime.id}">
+                        let primeHtml = `
+                            <div class="form-check prime-item">
+                                <input class="form-check-input prime-checkbox" type="checkbox" name="primes[]" 
+                                    id="prime${prime.id}" value="${prime.id}" data-mode="${prime.mode}">
                                 <label class="form-check-label" for="prime${prime.id}">${prime.title} (${prime.abrv}) - ${prime.category_range}</label>
-                            </div>
-                        `);
+                        `;
+                        
+                        if (prime.mode === 2) {
+                            primeHtml += `
+                                <div class="prime-value-input" id="primeValue${prime.id}" style="display: none; margin-left: 20px; margin-top: 5px;">
+                                    <input type="number" class="form-control" name="prime_values[${prime.id}]" placeholder="Enter value">
+                                </div>
+                            `;
+                        }
+                        
+                        primeHtml += `</div>`;
+                        $('#primesContainer').append(primeHtml);
                     });
                 } else {
                     $('#primesContainer').append('<p>No primes available for this groupe and category</p>');
@@ -225,12 +259,23 @@ $(document).ready(function() {
                 $('#primesContainer').empty();
                 if (data.length > 0) {
                     $.each(data, function(key, prime) {
-                        $('#primesContainer').append(`
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="primes[]" id="prime${prime.id}" value="${prime.id}">
+                        let primeHtml = `
+                            <div class="form-check prime-item">
+                                <input class="form-check-input prime-checkbox" type="checkbox" name="primes[]" 
+                                    id="prime${prime.id}" value="${prime.id}" data-mode="${prime.mode}">
                                 <label class="form-check-label" for="prime${prime.id}">${prime.title} (${prime.abrv}) - ${prime.category_range}</label>
-                            </div>
-                        `);
+                        `;
+                        
+                        if (prime.mode === 2) {
+                            primeHtml += `
+                                <div class="prime-value-input" id="primeValue${prime.id}" style="display: none; margin-left: 20px; margin-top: 5px;">
+                                    <input type="number" class="form-control" name="prime_values[${prime.id}]" placeholder="Enter value">
+                                </div>
+                            `;
+                        }
+                        
+                        primeHtml += `</div>`;
+                        $('#primesContainer').append(primeHtml);
                     });
                 } else {
                     $('#primesContainer').append('<p>No primes available for this groupe and category</p>');
